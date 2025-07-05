@@ -1,0 +1,128 @@
+<div class="game-container">
+  <!-- Connection Status -->
+  <div class="connection-status" [class.connected]="isConnected" [class.disconnected]="!isConnected">
+    <span>{{ isConnected ? 'Connected' : 'Disconnected' }}</span>
+  </div>
+
+  <!-- Error Message -->
+  <div class="error-message" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Queue Screen -->
+  <div class="queue-screen" *ngIf="!inGame && !gameFinished">
+    <div class="queue-content">
+      <h2>Flag Guessing Game</h2>
+      <p>Test your knowledge of world flags in this multiplayer trivia game!</p>
+
+      <div class="queue-status" *ngIf="!inQueue">
+        <button class="play-button" (click)="joinQueue()" [disabled]="!isConnected">
+          Play Now
+        </button>
+      </div>
+
+      <div class="queue-waiting" *ngIf="inQueue">
+        <div class="spinner"></div>
+        <p>{{ queueStatus }}</p>
+        <button class="cancel-button" (click)="leaveQueue()">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Screen -->
+  <div class="game-screen" *ngIf="inGame && currentGame">
+    <!-- Game Header -->
+    <div class="game-header">
+      <div class="round-info">
+        <span>Round {{ currentGame.currentRound + 1 }} of {{ currentGame.round ? 10 : 0 }}</span>
+      </div>
+
+      <div class="timer" [class.warning]="timeRemaining <= 5">
+        <span>{{ timeRemaining }}s</span>
+      </div>
+    </div>
+
+    <!-- Players Info -->
+    <div class="players-info">
+      <div class="player current-player">
+        <span class="player-name">{{ getCurrentPlayer()?.username }} (You)</span>
+        <span class="player-score">{{ getCurrentPlayer()?.score || 0 }}</span>
+      </div>
+
+      <div class="vs">VS</div>
+
+      <div class="player opponent">
+        <span class="player-name">{{ getOpponent()?.username }}</span>
+        <span class="player-score">{{ getOpponent()?.score || 0 }}</span>
+      </div>
+    </div>
+
+    <!-- Flag Display -->
+    <div class="flag-container">
+      <div class="flag-image" *ngIf="currentGame.round?.flag">
+        <img [src]="currentGame.round.flag" [alt]="'Flag of ' + currentGame.round.correctAnswer" />
+      </div>
+      <div class="flag-debug" *ngIf="!currentGame.round?.flag">
+        <p style="color: red; font-size: 14px;">⚠️ Flag not loaded</p>
+        <p style="color: #666; font-size: 12px;">Flag data: {{ currentGame.round.flag || 'undefined' }}</p>
+      </div>
+      <p class="question">Which country does this flag belong to?</p>
+    </div>
+
+    <!-- Answer Options -->
+    <div class="options-container">
+      <button
+        *ngFor="let option of currentGame.round?.options"
+        [class]="getOptionClass(option)"
+        (click)="selectOption(option)"
+        [disabled]="!canAnswer || selectedOption !== null"
+      >
+        {{ option }}
+      </button>
+    </div>
+
+    <!-- Answer Status -->
+    <div class="answer-status" *ngIf="selectedOption">
+      <p>Answer submitted: <strong>{{ selectedOption }}</strong></p>
+      <p>Waiting for opponent...</p>
+    </div>
+  </div>
+
+  <!-- Results Screen -->
+  <div class="results-screen" *ngIf="gameFinished && gameResults">
+    <div class="results-content">
+      <h2>Game Results</h2>
+
+      <div class="final-scores">
+        <div class="score-item" *ngFor="let result of gameResults.results; let i = index">
+          <div class="rank">{{ i + 1 }}</div>
+          <div class="player-info">
+            <span class="name">{{ result.username }}</span>
+            <span class="score">{{ result.score }} points</span>
+            <span class="accuracy">{{ result.correctAnswers }}/{{ result.totalAnswers }} correct</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="winner-message" *ngIf="gameResults.results.length > 0">
+        <h3 *ngIf="gameResults.results[0].username === getCurrentPlayer()?.username">
+          🎉 Congratulations! You won!
+        </h3>
+        <h3 *ngIf="gameResults.results[0].username !== getCurrentPlayer()?.username">
+          {{ gameResults.results[0].username }} won this round!
+        </h3>
+      </div>
+
+      <div class="results-actions">
+        <button class="play-again-button" (click)="playAgain()">
+          Play Again
+        </button>
+        <button class="dashboard-button" (click)="goToDashboard()">
+          Back to Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

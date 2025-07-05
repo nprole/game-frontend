@@ -1,0 +1,52 @@
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar .flex {
+  min-height: 60px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.75rem;
+  }
+
+  .navbar .flex {
+    flex-direction: column;
+    gap: 0.5rem;
+    min-height: auto;
+  }
+
+  .navbar .w-32 {
+    width: 24rem;
+  }
+
+  .navbar .text-lg {
+    font-size: 1rem;
+  }
+
+  .navbar .gap-4 {
+    gap: 0.5rem;
+  }
+
+  .navbar .gap-3 {
+    gap: 0.25rem;
+  }
+}
+
+/* Animation for XP bar */
+.navbar .bg-gradient-to-r {
+  transition: width 0.5s ease-in-out;
+}
+
+/* Currency badges */
+.navbar .bg-yellow-600,
+.navbar .bg-blue-600,
+.navbar .bg-red-600 {
+  min-width: 60px;
+  justify-content: center;
+}

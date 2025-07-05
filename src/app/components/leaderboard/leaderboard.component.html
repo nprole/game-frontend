@@ -1,0 +1,103 @@
+<app-navbar></app-navbar>
+<div class="leaderboard-container">
+  <div class="leaderboard-header">
+    <h1>🏆 Leaderboard</h1>
+    <p>Top 50 players ranked by level and experience</p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>Loading leaderboard...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-container">
+    <div class="error-icon">⚠️</div>
+    <h3>Oops! Something went wrong</h3>
+    <p>Failed to load the leaderboard. Please try again.</p>
+    <button class="retry-btn" (click)="loadLeaderboard()">Retry</button>
+  </div>
+
+  <!-- Leaderboard Content -->
+  <div *ngIf="!loading && !error" class="leaderboard-content">
+    <!-- Top 3 Podium -->
+    <div class="podium-container" *ngIf="leaderboard.length >= 3">
+      <div class="podium">
+        <!-- 2nd Place -->
+        <div class="podium-place second-place">
+          <div class="podium-rank">🥈</div>
+          <div class="podium-avatar">{{ getPodiumAvatar(1) }}</div>
+          <div class="podium-username">{{ getPodiumUsername(1) }}</div>
+          <div class="podium-stats">
+            <span class="level">Lv.{{ getPodiumLevel(1) }}</span>
+            <span class="xp">{{ getPodiumExperience(1) }} XP</span>
+          </div>
+        </div>
+
+        <!-- 1st Place -->
+        <div class="podium-place first-place">
+          <div class="podium-rank">🥇</div>
+          <div class="podium-avatar">{{ getPodiumAvatar(0) }}</div>
+          <div class="podium-username">{{ getPodiumUsername(0) }}</div>
+          <div class="podium-stats">
+            <span class="level">Lv.{{ getPodiumLevel(0) }}</span>
+            <span class="xp">{{ getPodiumExperience(0) }} XP</span>
+          </div>
+        </div>
+
+        <!-- 3rd Place -->
+        <div class="podium-place third-place">
+          <div class="podium-rank">🥉</div>
+          <div class="podium-avatar">{{ getPodiumAvatar(2) }}</div>
+          <div class="podium-username">{{ getPodiumUsername(2) }}</div>
+          <div class="podium-stats">
+            <span class="level">Lv.{{ getPodiumLevel(2) }}</span>
+            <span class="xp">{{ getPodiumExperience(2) }} XP</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leaderboard Table -->
+    <div class="leaderboard-table">
+      <div class="table-header">
+        <div class="header-rank">Rank</div>
+        <div class="header-player">Player</div>
+        <div class="header-level">Level</div>
+        <div class="header-xp">Experience</div>
+      </div>
+
+      <div class="table-body">
+        <div
+          *ngFor="let entry of leaderboard; let i = index"
+          class="table-row"
+          [ngClass]="getRankClass(entry.rank)"
+        >
+          <div class="cell-rank">
+            <span class="rank-icon">{{ getRankIcon(entry.rank) }}</span>
+          </div>
+          <div class="cell-player">
+            <div class="player-avatar">{{ getPlayerAvatar(entry) }}</div>
+            <div class="player-info">
+              <div class="player-name">{{ getPlayerName(entry) }}</div>
+            </div>
+          </div>
+          <div class="cell-level">
+            <span class="level-badge">Lv.{{ entry.level }}</span>
+          </div>
+          <div class="cell-xp">
+            <span class="xp-value">{{ entry.experience.toLocaleString() }} XP</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="leaderboard.length === 0" class="empty-state">
+      <div class="empty-icon">📊</div>
+      <h3>No players yet</h3>
+      <p>Be the first to start playing and climb the leaderboard!</p>
+    </div>
+  </div>
+</div>

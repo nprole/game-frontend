@@ -1,0 +1,70 @@
+<nav class="navbar bg-blue-800 text-white p-4">
+  <div class="flex justify-between items-center w-full">
+    <!-- Left side - Player level and XP bar -->
+    <div class="flex items-center gap-4" *ngIf="playerStats">
+      <div class="flex items-center gap-2">
+        <span class="text-sm font-semibold">Level {{ playerStats.level }}</span>
+        <div class="w-32 h-3 bg-gray-600 rounded-full overflow-hidden">
+          <div
+            class="h-full bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full transition-all duration-300"
+            [style.width.%]="xpPercentage">
+          </div>
+        </div>
+        <span class="text-xs text-gray-300">{{ playerStats.xp }}/{{ getXpForLevel(playerStats.level) }} XP</span>
+      </div>
+    </div>
+
+    <!-- Center - App title and navigation -->
+    <div class="flex items-center gap-6">
+      <div class="text-lg font-bold">
+        🎮 Flag Guessing Game
+      </div>
+      <div class="flex items-center gap-4">
+        <a
+          routerLink="/dashboard"
+          class="text-sm hover:text-yellow-300 transition-colors cursor-pointer">
+          🏠 Dashboard
+        </a>
+        <a
+          routerLink="/game"
+          class="text-sm hover:text-yellow-300 transition-colors cursor-pointer">
+          🎯 Play Game
+        </a>
+        <a
+          routerLink="/leaderboard"
+          class="text-sm hover:text-yellow-300 transition-colors cursor-pointer">
+          🏆 Leaderboard
+        </a>
+      </div>
+    </div>
+
+    <!-- Right side - Currencies and user info -->
+    <div class="flex items-center gap-4">
+      <!-- Currencies -->
+      <div class="flex items-center gap-3" *ngIf="playerStats">
+        <div class="flex items-center gap-1 bg-yellow-600 px-2 py-1 rounded-md">
+          <span class="text-yellow-200">🪙</span>
+          <span class="text-sm font-semibold">{{ playerStats.gold | number }}</span>
+        </div>
+        <div class="flex items-center gap-1 bg-blue-600 px-2 py-1 rounded-md">
+          <span class="text-blue-200">💎</span>
+          <span class="text-sm font-semibold">{{ playerStats.diamonds | number }}</span>
+        </div>
+        <div class="flex items-center gap-1 bg-red-600 px-2 py-1 rounded-md">
+          <span class="text-red-200">🔴</span>
+          <span class="text-sm font-semibold">{{ playerStats.rubies | number }}</span>
+        </div>
+      </div>
+
+      <!-- User info and logout -->
+      <div class="flex items-center gap-3">
+        <span class="text-sm" *ngIf="currentUser">{{ currentUser.username }}</span>
+        <button
+          (click)="logout()"
+          class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded-md text-sm transition-colors">
+          Logout
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>

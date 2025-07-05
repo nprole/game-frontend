@@ -1,25 +1,32 @@
 <div class="dashboard-container">
   <div class="dashboard-header">
-    <h1>Welcome to the Game Dashboard</h1>
-    <button (click)="logout()" class="logout-button">Logout</button>
+    <h1>Welcome {{ currentUser?.username }}!</h1>
   </div>
 
   <div class="dashboard-content">
     <div class="welcome-card">
-      <h2>🎮 Game Dashboard</h2>
-      <p>You are successfully logged in! This is where your game interface will be.</p>
+      <h2>🎮 Flag Guessing Game</h2>
+      <p>Test your knowledge of world flags in this exciting multiplayer trivia game!</p>
+
+      <div class="play-section">
+        <button (click)="playGame()" class="play-button">
+          🚀 Play Now
+        </button>
+        <p class="play-description">Match with another player and compete in 10 rounds of flag guessing!</p>
+      </div>
+
       <div class="game-features">
         <div class="feature">
-          <h3>🎯 Multiplayer Games</h3>
-          <p>Join real-time multiplayer sessions</p>
+          <h3>🎯 Real-time Multiplayer</h3>
+          <p>Face off against opponents in real-time flag guessing battles</p>
         </div>
         <div class="feature">
-          <h3>🏆 Leaderboards</h3>
-          <p>Compete with players worldwide</p>
+          <h3>🏆 Scoring System</h3>
+          <p>Earn points for correct answers and quick responses</p>
         </div>
         <div class="feature">
-          <h3>💬 Chat System</h3>
-          <p>Communicate with other players</p>
+          <h3>🌍 Global Flags</h3>
+          <p>Test your knowledge of flags from around the world</p>
         </div>
       </div>
     </div>

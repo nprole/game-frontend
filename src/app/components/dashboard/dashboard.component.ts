@@ -11,13 +11,16 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
+  currentUser: any = null;
+
   constructor(
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) {
+    this.currentUser = this.authService.getCurrentUser();
+  }
 
-  logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+  playGame(): void {
+    this.router.navigate(['/game']);
   }
 }
