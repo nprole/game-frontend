@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  # Angular Frontend
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: game-frontend-app
+    restart: unless-stopped
+    ports:
+      - "4200:4200"
+    environment:
+      - NODE_ENV=development
+      - API_URL=${API_URL:-http://localhost:3000}
+      - SOCKET_URL=${SOCKET_URL:-http://localhost:3000}
+    networks:
+      - frontend-network
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+networks:
+  frontend-network:
+    driver: bridge
